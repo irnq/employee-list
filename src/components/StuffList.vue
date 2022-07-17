@@ -86,7 +86,7 @@
                       <v-menu
                         v-model="dialogDataPicker"
                         :close-on-content-click="false"
-                        :nudge-right="40"
+                        :nudge-right="30"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
@@ -152,7 +152,11 @@
               </v-form>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="600px">
+          <v-dialog
+            v-model="dialogDelete"
+            max-width="600px"
+            @click:outside="closeDelete"
+          >
             <v-card>
               <v-card-title class="text-h5"
                 >Вы действительно хотите удалить сотрудника?</v-card-title
@@ -190,7 +194,7 @@
 
 <script lang="ts">
 import router from '@/router';
-import { defineComponent } from 'vue';
+import Vue from 'vue';
 import { v4 } from 'uuid';
 
 import { IPerson, Rate } from '@/interfaces/types';
@@ -222,7 +226,7 @@ const RULES = {
     Number(v) > 0 || 'Должен быть больше 0',
 };
 
-export default defineComponent({
+export default Vue.extend({
   name: 'StuffList',
 
   data() {
@@ -305,6 +309,7 @@ export default defineComponent({
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
 
