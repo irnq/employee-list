@@ -309,7 +309,6 @@ export default Vue.extend({
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
-        this.$refs.form.resetValidation();
       });
     },
 
@@ -351,7 +350,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.table >>> tr {
+.table:deep() tr {
   cursor: pointer;
 }
 </style>
