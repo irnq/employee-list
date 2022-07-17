@@ -38,109 +38,118 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        v-model="editedItem.lastName"
-                        label="Фамилия"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Имя"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field
-                        v-model="editedItem.middleName"
-                        label="Отчество"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="editedItem.position"
-                        label="Должность"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-checkbox
-                        label="Трудовая книжка"
-                        v-model="editedItem.certificate"
-                      ></v-checkbox>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-menu
-                      v-model="dialogDataPicker"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
+              <v-form v-model="formValid" ref="form" lazy-validation>
+                <v-card-title>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="4">
                         <v-text-field
-                          v-model="editedItem.workFrom"
-                          label="Дата выхода на работу"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
+                          v-model="editedItem.lastName"
+                          label="Фамилия"
+                          :rules="nameRules"
                         ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="editedItem.workFrom"
-                        scrollable
-                        @input="dialogDataPicker = false"
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="editedItem.salary"
-                        label="Оклад"
-                        prefix="₽"
-                      ></v-text-field
-                    ></v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="editedItem.rate"
-                        label="Ставка"
-                        :items="rates"
-                        item-text="text"
-                        item-value="value"
-                      ></v-select
-                    ></v-col>
-                  </v-row>
-                  <v-row>
-                    <v-spacer></v-spacer>
-                    <v-card-text class="text-right mt-n9"
-                      >{{
-                        (editedItem.salary * editedItem.rate).toFixed(2)
-                      }}
-                      ₽</v-card-text
-                    >
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Отмена
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Сохранить
-                </v-btn>
-              </v-card-actions>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Имя"
+                          :rules="nameRules"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <v-text-field
+                          v-model="editedItem.middleName"
+                          label="Отчество"
+                          :rules="nameRules"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          v-model="editedItem.position"
+                          :rules="[rules.required]"
+                          label="Должность"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-checkbox
+                          label="Трудовая книжка"
+                          v-model="editedItem.certificate"
+                        ></v-checkbox>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-menu
+                        v-model="dialogDataPicker"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.workFrom"
+                            label="Дата выхода на работу"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="editedItem.workFrom"
+                          scrollable
+                          @input="dialogDataPicker = false"
+                        ></v-date-picker>
+                      </v-menu>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          v-model="editedItem.salary"
+                          label="Оклад"
+                          prefix="₽"
+                          :rules="salaryRules"
+                        ></v-text-field
+                      ></v-col>
+                      <v-col cols="12" sm="6">
+                        <v-select
+                          v-model="editedItem.rate"
+                          label="Ставка"
+                          :items="rates"
+                          item-text="text"
+                          item-value="value"
+                        ></v-select
+                      ></v-col>
+                    </v-row>
+                    <v-row>
+                      <v-spacer></v-spacer>
+                      <v-card-text
+                        class="text-right mt-n9"
+                        v-if="Number(editedItem.salary)"
+                        >{{
+                          (editedItem.salary * editedItem.rate).toFixed(2)
+                        }}
+                        ₽</v-card-text
+                      >
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="close">
+                    Отмена
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="save">
+                    Сохранить
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="600px">
@@ -182,6 +191,7 @@
 <script lang="ts">
 import router from '@/router';
 import { defineComponent } from 'vue';
+import { v4 } from 'uuid';
 import {
   STUFF,
   HEADER,
@@ -201,6 +211,20 @@ const RATE_SELECT = [
   { text: 'Половина', value: Rate.half },
 ];
 
+const RULES = {
+  min2char: (v: string): boolean | string =>
+    v.length >= 2 || 'Минимум 2 символа',
+  max20char: (v: string): boolean | string =>
+    v.length <= 20 || 'Минимум 2 символа',
+  required: (v: string): boolean | string => !!v || 'Поле не может быть пустым',
+  cyrillic: (v: string): boolean | string =>
+    !/[^а-яА-ЯёЁ/-]/gi.test(v) || 'Доступна только кириллица',
+  digit: (v: string): boolean | string =>
+    !/[^0-9]/gi.test(v) || 'Доступны только цифры',
+  positive: (v: string): boolean | string =>
+    Number(v) > 0 || 'Должен быть больше 0',
+};
+
 export default defineComponent({
   name: 'StuffList',
 
@@ -216,6 +240,15 @@ export default defineComponent({
       dialogDelete: false,
       dialogDataPicker: false,
       rates: RATE_SELECT,
+      formValid: true,
+      rules: RULES,
+      nameRules: [
+        RULES.required,
+        RULES.cyrillic,
+        RULES.max20char,
+        RULES.min2char,
+      ],
+      salaryRules: [RULES.required, RULES.digit, RULES.positive],
     };
   },
 
@@ -228,7 +261,7 @@ export default defineComponent({
   },
 
   methods: {
-    filterName(value: string | null, search: string | null) {
+    filterName(value: string | null, search: string | null): boolean {
       return (
         value !== null &&
         search !== null &&
@@ -237,39 +270,40 @@ export default defineComponent({
       );
     },
 
-    updateDate() {
+    updateDate(): void {
       this.editedItem.workFrom = new Date().toISOString().split('T')[0];
     },
 
-    editItem(e: MouseEvent, item: IPerson) {
+    editItem(e: MouseEvent, item: IPerson): void {
       e.stopPropagation();
       this.editedIndex = this.stuff.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogMain = true;
     },
 
-    deleteItem(e: MouseEvent, item: IPerson) {
+    deleteItem(e: MouseEvent, item: IPerson): void {
       e.stopPropagation();
       this.editedIndex = this.stuff.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
+    deleteItemConfirm(): void {
       this.stuff.splice(this.editedIndex, 1);
       this.updateBase();
       this.closeDelete();
     },
 
-    close() {
+    close(): void {
       this.dialogMain = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.$refs.form.resetValidation();
       });
     },
 
-    closeDelete() {
+    closeDelete(): void {
       this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
@@ -277,27 +311,33 @@ export default defineComponent({
       });
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.stuff[this.editedIndex], this.editedItem);
-      } else {
-        this.stuff.push(this.editedItem);
-      }
-      this.updateBase();
-      this.close();
+    save(): void {
+      this.$refs.form.validate();
+      this.$nextTick(() => {
+        if (this.formValid) {
+          if (this.editedIndex > -1) {
+            Object.assign(this.stuff[this.editedIndex], this.editedItem);
+          } else {
+            this.editedItem.id = v4();
+            this.stuff.push(this.editedItem);
+          }
+          this.updateBase();
+          this.close();
+        }
+      });
     },
 
-    openPersonPage(item: IPerson) {
+    openPersonPage(item: IPerson): void {
       router.push(item.id);
     },
 
-    updateBase() {
+    updateBase(): void {
       Storage.data.base = [...this.stuff];
       Storage.saveData();
     },
   },
 
-  created() {
+  created(): void {
     new Storage();
     if (!Storage.data.base) {
       Storage.data.base = [...STUFF];
