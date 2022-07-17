@@ -70,8 +70,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Storage from '@/services/storage';
-import { IPerson } from '@/constant/stuff';
-import { Rate } from '@/constant/stuff';
+import { IPerson, Rate } from '@/interfaces/types';
 
 export default Vue.extend({
   name: 'PersonView',

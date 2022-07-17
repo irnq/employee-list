@@ -1,4 +1,4 @@
-import { IPerson } from '@/constant/stuff';
+import { IPerson } from '@/interfaces/types';
 
 const DEFAULT_KEY = 'app';
 

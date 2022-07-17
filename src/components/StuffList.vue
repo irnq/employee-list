@@ -192,13 +192,10 @@
 import router from '@/router';
 import { defineComponent } from 'vue';
 import { v4 } from 'uuid';
-import {
-  STUFF,
-  HEADER,
-  IPerson,
-  DEFAULT_PERSON,
-  Rate,
-} from '../constant/stuff';
+
+import { IPerson, Rate } from '@/interfaces/types';
+import { STUFF } from '@/constant/MOCK';
+import { DEFAULT_PERSON, HEADER } from '@/constant/constant';
 import Storage from '@/services/storage';
 
 enum DialogTitles {
@@ -220,7 +217,7 @@ const RULES = {
   cyrillic: (v: string): boolean | string =>
     !/[^а-яА-ЯёЁ/-]/gi.test(v) || 'Доступна только кириллица',
   digit: (v: string): boolean | string =>
-    !/[^0-9]/gi.test(v) || 'Доступны только цифры',
+    !/[^0-9/-]/gi.test(v) || 'Доступны только цифры',
   positive: (v: string): boolean | string =>
     Number(v) > 0 || 'Должен быть больше 0',
 };
@@ -248,7 +245,7 @@ export default defineComponent({
         RULES.max20char,
         RULES.min2char,
       ],
-      salaryRules: [RULES.required, RULES.digit, RULES.positive],
+      salaryRules: [RULES.positive, RULES.required, RULES.digit],
     };
   },
 

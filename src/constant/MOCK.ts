@@ -1,19 +1,4 @@
-export interface IPerson {
-  name: string;
-  lastName: string;
-  middleName: string;
-  position: string;
-  certificate: boolean;
-  salary: number;
-  workFrom: string;
-  rate: Rate;
-  id: string;
-}
-
-export enum Rate {
-  half = 0.5,
-  full = 1,
-}
+import { IPerson, Rate } from '@/interfaces/types';
 
 export const STUFF: IPerson[] = [
   {
@@ -125,46 +110,5 @@ export const STUFF: IPerson[] = [
     salary: 40000,
     workFrom: '2018-02-01',
     rate: Rate.full,
-  },
-];
-
-export const DEFAULT_PERSON: IPerson = {
-  id: '',
-  name: '',
-  lastName: '',
-  middleName: '',
-  position: '',
-  certificate: false,
-  salary: 0,
-  workFrom: '',
-  rate: Rate.full,
-};
-
-export const HEADER = [
-  {
-    text: 'Фамилия',
-    align: 'start',
-    sortable: true,
-    value: 'lastName',
-  },
-  {
-    text: 'Имя',
-    sortable: true,
-    value: 'name',
-  },
-  {
-    text: 'Отчество',
-    sortable: true,
-    value: 'middleName',
-  },
-  {
-    text: 'Должность',
-    sortable: true,
-    value: 'position',
-  },
-  {
-    text: 'Действия',
-    sortable: false,
-    value: 'actions',
   },
 ];
